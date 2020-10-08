@@ -302,25 +302,25 @@ void C_Output(char* check)//输出检查编号名称
 {
     int i;
     for(i=0;check[i]!='/0';i++)
-           {if(check[i]==0)             //???可以==0吗 不应该是'0'吗
+           {if(check[i]=='0')             //???可以==0吗 不应该是'0'吗
                 printf("0、血常规\n");
-            if(check[i]==1)
+            if(check[i]=='1')
                 printf("1、尿常规\n");
-            if(check[i]==2)
+            if(check[i]=='2')
                 printf("2、凝血因子检测\n");
-            if(check[i]==3)
+            if(check[i]=='3')
                 printf("3、心电图\n");
-            if(check[i]==4)
+            if(check[i]=='4')
                 printf("4、心脏彩超\n");
-            if(check[i]==5)
+            if(check[i]=='5')
                 printf("5、胃镜\n");
-            if(check[i]==6)
+            if(check[i]=='6')
                 printf("6、肠镜\n");
-            if(check[i]==7)
+            if(check[i]=='7')
                 printf("7、验光\n");
-            if(check[i]==8)
+            if(check[i]=='8')
                 printf("8、脑CT\n");
-            if(check[i]==9)
+            if(check[i]=='9')
                 printf("9、淋巴结检查\n");
 
         }
@@ -330,25 +330,25 @@ void M_Output(char* medicine)//输出药品编号名称数量
     int i;
     for(i=0;medicine[i]!='/0';i=i+3)
     {
-        if(medicine[i]=0)//不对劲吧
+        if(medicine[i]=='0')//不对劲吧
             printf("%d、生理盐水 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=1)
+        if(medicine[i]=='1')
             printf("%d、扑热息痛 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=2)
+        if(medicine[i]=='2')
             printf("%d、可立克 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=3)
+        if(medicine[i]=='3')
             printf("%d、阿西美辛 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=4)
+        if(medicine[i]=='4')
             printf("%d、阿司匹林 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=5)
+        if(medicine[i]=='5')
             printf("%d、青霉素%c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=6)
+        if(medicine[i]=='6')
             printf("%d、阿莫西林 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=7)
+        if(medicine[i]=='7')
             printf("%d、头孢氨苄胶囊 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=8)
+        if(medicine[i]=='8')
             printf("%d、阿奇霉素 %c%c/n",i,medicine[i+1],medicine[i+2]);
-        if(medicine[i]=9)
+        if(medicine[i]=='9')
             printf("%d、念慈菴川贝枇杷膏 %c%c/n",i,medicine[i+1],medicine[i+2]);
     }
 }
