@@ -39,7 +39,7 @@ int main()
 
     return 0;
 }
-void D_insert(struct Doctor**head, char* dn,char* dl, char* dd,char* dN,int *dw )//创建医生链表函数
+void D_insert(struct Doctor**head, char* dn,char* dl, char* dd,char* dN,int *dw )//创建医生链表函数  不明白为什么是两个*号
 {
     struct Doctor *temp=(struct Doctor*)malloc(sizeof(struct Doctor));
     strcpy(temp->D_Name,dn);
@@ -117,15 +117,15 @@ struct Record* R_input(struct Doctor* d_head)//从外部输入诊疗记录
     struct Record* record;
     struct Record* r_head=NULL;
     record->rnextp=NULL;
-    printf("请输入患者的姓名：");
+    printf("请输入患者的姓名：\n");
     scanf("%s",record->patient->P_Name);
-    printf("请输入患者的年龄：");
+    printf("请输入患者的年龄：\n");
     scanf("%d",&record->patient->P_Age);
-    printf("请输入患者的ID：");
+    printf("请输入患者的ID：\n");
     scanf("%d",&record->patient->P_ID);
-    printf("请输入患者的挂号：");
+    printf("请输入患者的挂号：\n");
    scanf("%s",record->patient->P_Number);
-    printf("请输入患者所挂医生的工号：");
+    printf("请输入患者所挂医生的工号：\n");
     scanf("%s",record->doctor->D_Number);
     struct Doctor* dp;
     dp=d_head;
@@ -139,12 +139,12 @@ struct Record* R_input(struct Doctor* d_head)//从外部输入诊疗记录
             dp=dp->D_nextp;
      record->doctor=dp;
 }
-printf("请依次输入检查的编号（0--9）：");
+printf("请依次输入检查的编号（0--9）：\n");
 scanf("%s",record->Check);
-printf("请依次输入药品的编号和数目：（编号为0--9，数目应不超过99）");
+printf("请依次输入药品的编号和数目：（编号为0--9，数目应不超过99）\n");
 scanf("%s",record->Medicine);
-printf("请输入就诊时间：（月 日 时 分）");
-scanf("%d %d %d %d",record->time->Month,record->time->Day,record->time->Hour,record->time->Minute);
+printf("请输入就诊时间：（月 日 时 分）\n");
+scanf("%d %d %d %d",&record->time->Month,&record->time->Day,&record->time->Hour,&record->time->Minute);
 R_insert(r_head,record->patient,record->doctor,record->time,record->Check,record->Medicine);
 return r_head;
 }
@@ -252,7 +252,7 @@ void R_change(struct Record* r_head,struct Doctor* d_head,char* number)//根据�
     scanf("%s",record->doctor->D_Number);
     struct Doctor* dp;
     dp=d_head;
-    while(dp->D_Number!=record->doctor->D_Number);//有点问题？没有分号吧
+    while(dp->D_Number!=record->doctor->D_Number)//有点问题？没有分号吧
     {if(dp->D_nextp==NULL)
     {
         printf("工号输入错误！");
@@ -262,12 +262,12 @@ void R_change(struct Record* r_head,struct Doctor* d_head,char* number)//根据�
             dp=dp->D_nextp;
      record->doctor=dp;
 }
-printf("请依次输入检查的编号：");
+printf("请依次输入检查的编号：\n");
 scanf("%s",record->Check);
-printf("请依次输入药品的编号和数目：（数目应不超过99）");
+printf("请依次输入药品的编号和数目：（数目应不超过99）\n");
 scanf("%s",record->Medicine);
-printf("请输入就诊时间：（月 日 时 分）");
-scanf("%d %d %d %d",record->time->Month,record->time->Day,record->time->Hour,record->time->Minute);
+printf("请输入就诊时间：（月 日 时 分）\n");
+scanf("%d %d %d %d",&record->time->Month,&record->time->Day,&record->time->Hour,&record->time->Minute);
 if(r_head == NULL)
     {
         printf("链表为空");
@@ -302,7 +302,7 @@ void C_Output(char* check)//输出检查编号名称
 {
     int i;
     for(i=0;check[i]!='/0';i++)
-           {if(check[i]==0)
+           {if(check[i]==0)             //???可以==0吗 不应该是'0'吗
                 printf("0、血常规\n");
             if(check[i]==1)
                 printf("1、尿常规\n");
@@ -330,7 +330,7 @@ void M_Output(char* medicine)//输出药品编号名称数量
     int i;
     for(i=0;medicine[i]!='/0';i=i+3)
     {
-        if(medicine[i]=0)
+        if(medicine[i]=0)//不对劲吧
             printf("%d、生理盐水 %c%c/n",i,medicine[i+1],medicine[i+2]);
         if(medicine[i]=1)
             printf("%d、扑热息痛 %c%c/n",i,medicine[i+1],medicine[i+2]);
@@ -383,32 +383,32 @@ if(rp==NULL)
 else
 {while(T_compare(rp->time,tl)==0)
 {
-    printf("患者的姓名为：%s/n",rp->patient->P_Name);
-    printf("患者的年龄为：%d/n",rp->patient->P_ID);
-    printf("患者的挂号为：%s/n",rp->patient->P_Number);
-    printf("患者的ID为：%d/n",rp->patient->P_ID);
-    printf("医生的姓名为：%s/n",rp->doctor->D_Name);
-    printf("医生的级别为：%s/n",rp->doctor->D_Level);
-    printf("医生的科室为：%s/n",rp->doctor->D_Dep);
-    printf("医生的工号为：%s/n",rp->doctor->D_Number);
-    printf("检查的编号及名称为：/n");
+    printf("患者的姓名为：%s\n",rp->patient->P_Name);
+    printf("患者的年龄为：%d\n",rp->patient->P_ID);
+    printf("患者的挂号为：%s\n",rp->patient->P_Number);
+    printf("患者的ID为：%d\n",rp->patient->P_ID);
+    printf("医生的姓名为：%s\n",rp->doctor->D_Name);
+    printf("医生的级别为：%s\n",rp->doctor->D_Level);
+    printf("医生的科室为：%s\n",rp->doctor->D_Dep);
+    printf("医生的工号为：%s\n",rp->doctor->D_Number);
+    printf("检查的编号及名称为：\n");
     C_Output(rp->Check);
-    printf("药品的编号、名称和数量为：/n");
+    printf("药品的编号、名称和数量为：\n");
     M_Output(rp->Medicine);
-    printf("就诊时间为：%d月%d日 %d时%d分/n",rp->time->Month,rp->time->Day,rp->time->Hour,rp->time->Minute);
+    printf("就诊时间为：%d月%d日 %d时%d分\n",rp->time->Month,rp->time->Day,rp->time->Hour,rp->time->Minute);
     rp=rp->rnextp;
 }
-    printf("患者的姓名为：%s/n",rp->patient->P_Name);
-    printf("患者的年龄为：%d/n",rp->patient->P_ID);
-    printf("患者的挂号为：%s/n",rp->patient->P_Number);
-    printf("患者的ID为：%d/n",rp->patient->P_ID);
-    printf("医生的姓名为：%s/n",rp->doctor->D_Name);
-    printf("医生的级别为：%s/n",rp->doctor->D_Level);
-    printf("医生的科室为：%s/n",rp->doctor->D_Dep);
-    printf("医生的工号为：%s/n",rp->doctor->D_Number);
-    printf("检查的编号及名称为：/n");
+    printf("患者的姓名为：%s\n",rp->patient->P_Name);
+    printf("患者的年龄为：%d\n",rp->patient->P_ID);
+    printf("患者的挂号为：%s\n",rp->patient->P_Number);
+    printf("患者的ID为：%d\n",rp->patient->P_ID);
+    printf("医生的姓名为：%s\n",rp->doctor->D_Name);
+    printf("医生的级别为：%s\n",rp->doctor->D_Level);
+    printf("医生的科室为：%s\n",rp->doctor->D_Dep);
+    printf("医生的工号为：%s\n",rp->doctor->D_Number);
+    printf("检查的编号及名称为：\n");
     C_Output(rp->Check);
-    printf("药品的编号、名称和数量为：/n");
+    printf("药品的编号、名称和数量为：\n");
     M_Output(rp->Medicine);
     printf("就诊时间为：%d月%d日 %d时%d分/n",rp->time->Month,rp->time->Day,rp->time->Hour,rp->time->Minute);
 }}
@@ -416,55 +416,55 @@ void D_outcall(struct Doctor* d_head)//输出医生的出诊情况
 {
     struct Doctor* dp;
     dp=d_head;
-    printf("周一出诊的医生为：/n");
+    printf("周一出诊的医生为：\n");
     while(dp!=NULL)
         {if(dp->D_Workday[0]==1)
-        {printf("%s %s %s %s/n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
         dp=dp->D_nextp;}
     else
         dp=dp->D_nextp;
 }
 dp=d_head;
-    printf("周二出诊的医生为：/n");
+    printf("周二出诊的医生为：\n");
     while(dp!=NULL)
         {if(dp->D_Workday[1]==1)
-        {printf("%s %s %s %s/n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
         dp=dp->D_nextp;}
     else
         dp=dp->D_nextp;
 }
 dp=d_head;
-    printf("周三出诊的医生为：/n");
+    printf("周三出诊的医生为：\n");
     while(dp!=NULL)
         {if(dp->D_Workday[2]==1)
-        {printf("%s %s %s %s/n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
         dp=dp->D_nextp;}
     else
         dp=dp->D_nextp;
 }
 dp=d_head;
-    printf("周四出诊的医生为：/n");
+    printf("周四出诊的医生为：\n");
     while(dp!=NULL)
         {if(dp->D_Workday[3]==1)
-        {printf("%s %s %s %s/n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
         dp=dp->D_nextp;}
     else
         dp=dp->D_nextp;
 }
 dp=d_head;
-    printf("周五出诊的医生为：/n");
+    printf("周五出诊的医生为：\n");
     while(dp!=NULL)
         {if(dp->D_Workday[4]==1)
-        {printf("%s %s %s %s/n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
         dp=dp->D_nextp;}
     else
         dp=dp->D_nextp;
 }
 dp=d_head;
-    printf("周六出诊的医生为：/n");
+    printf("周六出诊的医生为：\n");
     while(dp!=NULL)
         {if(dp->D_Workday[5]==1)
-        {printf("%s %s %s %s/n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
         dp=dp->D_nextp;}
     else
         dp=dp->D_nextp;
@@ -473,7 +473,7 @@ dp=d_head;
     printf("周天出诊的医生为：/n");
     while(dp!=NULL)
         {if(dp->D_Workday[6]==1)
-        {printf("%s %s %s %s/n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
         dp=dp->D_nextp;}
     else
         dp=dp->D_nextp;
@@ -484,15 +484,15 @@ int D_busy(struct Record* r_head,char* number,struct Time* tf,struct Time* tl)//
     struct Record* rp;
     rp=r_head;
     int count=0;
-    while(T_compare(rp->time,tf)==0)
-    rp=rp->rnextp;
+    while(T_compare(rp->time,tf)==0){
+    rp=rp->rnextp;}
 if(rp==NULL)
-    printf("时间输入错误！");
+    printf("时间输入错误！\n");
 else
 {while(T_compare(rp->time,tl)==0)
 {
     if(rp==NULL)
-    printf("时间输入错误！");
+    printf("时间输入错误！\n");
     else
   {
      if(strcmp(rp->doctor->D_Number,number)==0)
