@@ -1,1 +1,511 @@
-my first repository
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+struct Record//诊疗记录结构体
+{
+    struct Patient* patient;
+    struct Doctor* doctor;
+    struct Time* time;
+    char Check[20];
+    char Medicine[40];
+    struct Record* rnextp;
+};
+struct Patient//患者结构体
+{
+    char P_Name[20];
+    int P_Age;
+    char P_Number[9];
+    int P_ID;
+    struct Patient* P_nextp;
+};
+struct Doctor//医生结构体
+{
+    char D_Name[20];
+    char D_Level[30];
+    char D_Dep[50];
+    char D_Number[5];
+    int D_Workday[7];
+    struct Doctor* D_nextp;
+};
+struct Time//时间结构体
+{
+    int Month;
+    int Day;
+    int Hour;
+    int Minute;
+};
+int main()
+{
+
+    return 0;
+}
+void D_insert(struct Doctor**head, char* dn,char* dl, char* dd,char* dN,int *dw )//创建医生链表函数  不明白为什么是两个*号
+{
+    struct Doctor *temp=(struct Doctor*)malloc(sizeof(struct Doctor));
+    strcpy(temp->D_Name,dn);
+    strcpy(temp->D_Level,dl);
+    strcpy(temp->D_Dep,dd);
+    strcpy(temp->D_Number,dN);
+    int i;
+    for(i=0;i<7;i++)
+        temp->D_Workday[i]=dw[i];
+    temp->D_nextp=NULL;
+    if((*head)==NULL)
+    {
+        (*head)=temp;
+    }
+    else
+    {
+        struct Doctor *t=(*head);
+        while(t->D_nextp!=NULL)
+            t=t->D_nextp;
+        t->D_nextp=temp;
+    }
+}
+ struct Doctor* D_finput()//从文件输入医生信息函数
+{
+    struct Doctor* d_head;
+    d_head=NULL;
+FILE* fp=fopen("doctors.txt","r");
+if(fp==NULL)
+{
+    printf("错误！找不到文件");
+    return 0;
+}
+int i;
+for(i=0;i<30;i++)
+   {
+        char dn[20];
+        char dl[30];
+        char dd[50];
+        char dN[5];
+        int dw[7];
+        fscanf(fp,"%s",dn);
+        fscanf(fp,"%s",dl);
+        fscanf(fp,"%s",dd);
+        fscanf(fp,"%s",dN);
+        int j;
+        for(j=0;j<7;j++)
+        fscanf(fp,"%d",&dw[j]);
+        D_insert(&d_head,dn,dl,dd,dN,dw);
+    }
+return d_head;
+}
+void R_insert(struct Record* head,struct Patient* p,struct Doctor* d,struct Time* t,char* check,char* medicine)//创建诊疗记录链表函数
+{
+    struct Record* temp=(struct Record*)malloc(sizeof(struct Record));
+    temp->patient=p;
+    temp->doctor=d;
+    temp->time=t;
+    strcpy(temp->Check,check);
+    strcpy(temp->Medicine,medicine);
+    temp->rnextp=NULL;
+     if(head==NULL)
+    {
+        head=temp;
+    }
+    else
+    {
+        struct Record *t=head;
+        while(t->rnextp!=NULL)
+            t=t->rnextp;
+        t->rnextp=temp;
+    }
+}
+struct Record* R_input(struct Doctor* d_head)//从外部输入诊疗记录
+{
+    struct Record* record;
+    struct Record* r_head=NULL;
+    record->rnextp=NULL;
+    printf("请输入患者的姓名：\n");
+    scanf("%s",record->patient->P_Name);
+    printf("请输入患者的年龄：\n");
+    scanf("%d",&record->patient->P_Age);
+    printf("请输入患者的ID：\n");
+    scanf("%d",&record->patient->P_ID);
+    printf("请输入患者的挂号：\n");
+   scanf("%s",record->patient->P_Number);
+    printf("请输入患者所挂医生的工号：\n");
+    scanf("%s",record->doctor->D_Number);
+    struct Doctor* dp;
+    dp=d_head;
+    while(dp->D_Number!=record->doctor->D_Number);
+    {if(dp->D_nextp==NULL)
+    {
+        printf("工号输入错误！");
+        return 0;
+    }
+        else
+            dp=dp->D_nextp;
+     record->doctor=dp;
+}
+printf("请依次输入检查的编号（0--9）：\n");
+scanf("%s",record->Check);
+printf("请依次输入药品的编号和数目：（编号为0--9，数目应不超过99）\n");
+scanf("%s",record->Medicine);
+printf("请输入就诊时间：（月 日 时 分）\n");
+scanf("%d %d %d %d",&record->time->Month,&record->time->Day,&record->time->Hour,&record->time->Minute);
+R_insert(r_head,record->patient,record->doctor,record->time,record->Check,record->Medicine);
+return r_head;
+}
+struct Record* R_finput(struct Doctor* d_head)//从文件输入诊疗记录
+{
+    struct Record* record;
+    struct Record* r_head=NULL;
+    record->rnextp=NULL;
+    FILE* fp;
+    if(fp=fopen("record.txt","w")==NULL)
+        printf("文件打开失败！");
+        else
+        {
+             while(feof(fp)!=EOF)
+             {fscanf(fp,"%s",record->patient->P_Name);
+             fscanf(fp,"%d",&record->patient->P_Age);
+             fscanf(fp,"%d",&record->patient->P_ID);
+             fscanf(fp,"%s",record->patient->P_Number);
+             fscanf(fp,"%s",record->doctor->D_Number);
+             struct Doctor* dp;
+            dp=d_head;
+            while(dp->D_Number!=record->doctor->D_Number);
+                {if(dp->D_nextp==NULL)
+                {
+                   printf("工号输入错误！");
+                   return 0;
+                 }
+        else
+            dp=dp->D_nextp;
+     record->doctor=dp;
+}
+fscanf(fp,"%s",record->Check);
+fscanf(fp,"%s",record->Medicine);
+fscanf(fp,"%d%d%d%d",&record->time->Month,&record->time->Day,&record->time->Hour,&record->time->Minute);
+R_insert(r_head,record->patient,record->doctor,record->time,record->Check,record->Medicine);}
+fclose(fp);
+return r_head;
+        }
+}
+void R_foutput(struct Record* r_head)//把诊疗记录输出文件
+{
+   struct Record* rp=r_head;
+   FILE* fp;
+    if(fp=fopen("record.txt","w")==NULL)
+        printf("文件打开失败！");
+    else
+    {
+     while(rp!=NULL)
+    {
+    fprintf(fp,"%s ",rp->patient->P_Name);
+    fprintf(fp,"%d ",rp->patient->P_Age);
+    fprintf(fp,"%d ",rp->patient->P_ID);
+    fprintf(fp,"%s ",rp->patient->P_Number);
+    fprintf(fp,"%s ",rp->doctor->D_Number);
+    fprintf(fp,"%s ",rp->Check);
+    fprintf(fp,"%s ",rp->Medicine);
+    fprintf(fp,"%d %d %d %d ",rp->time->Month,rp->time->Day,rp->time->Hour,rp->time->Minute);
+    rp=rp->rnextp;
+    }
+    fclose(fp);
+}}
+void R_delete(struct Record* r_head,char* number)//根据挂号删除链表中的诊疗记录
+{
+    if(r_head == NULL)
+    {
+        printf("链表为空");
+        return NULL;
+    }
+    struct Record * p, * q;
+    p = r_head;
+    q = p->rnextp;
+    while(q != NULL)
+    {
+        if(strcmp(q->patient->P_Number,number)==0)
+        {
+            p->rnextp= q->rnextp;
+            free(q);
+            q = p->rnextp;
+        }
+        else
+        {
+            p = p->rnextp;
+            q = q->rnextp;
+        }
+    }
+    if(r_head != NULL &&strcmp( r_head->patient->P_Number,number)==0)
+    {
+        q = r_head;
+        r_head = q->rnextp;
+        free(q);
+    }
+}
+void R_change(struct Record* r_head,struct Doctor* d_head,char* number)//根据挂号修改链表中的诊疗记录
+{
+    struct Record* record;
+    printf("请输入患者的姓名：");
+    scanf("%s",record->patient->P_Name);
+    printf("请输入患者的年龄：");
+    scanf("%d",&record->patient->P_Age);
+    printf("请输入患者的ID：");
+    scanf("%d",&record->patient->P_ID);
+    printf("请输入患者的挂号：");
+   scanf("%s",record->patient->P_Number);
+    printf("请输入患者所挂医生的工号：");
+    scanf("%s",record->doctor->D_Number);
+    struct Doctor* dp;
+    dp=d_head;
+    while(dp->D_Number!=record->doctor->D_Number)//有点问题？没有分号吧
+    {if(dp->D_nextp==NULL)
+    {
+        printf("工号输入错误！");
+        return ;
+    }
+        else
+            dp=dp->D_nextp;
+     record->doctor=dp;
+}
+printf("请依次输入检查的编号：\n");
+scanf("%s",record->Check);
+printf("请依次输入药品的编号和数目：（数目应不超过99）\n");
+scanf("%s",record->Medicine);
+printf("请输入就诊时间：（月 日 时 分）\n");
+scanf("%d %d %d %d",&record->time->Month,&record->time->Day,&record->time->Hour,&record->time->Minute);
+if(r_head == NULL)
+    {
+        printf("链表为空");
+        return NULL;
+    }
+    struct Record * p, * q;
+    p = r_head;
+    q = p->rnextp;
+    while(q != NULL)
+    {
+        if(strcmp(q->patient->P_Number,number)==0)
+        {
+            p->rnextp= record;
+            record->rnextp=q->rnextp;
+            free(q);
+        }
+        else
+        {
+            p = p->rnextp;
+            q = q->rnextp;
+        }
+    }
+    if(r_head != NULL &&strcmp( r_head->patient->P_Number,number)==0)
+    {
+        q = r_head;
+        r_head = record;
+        record->rnextp=q->rnextp;
+        free(q);
+    }
+}
+void C_Output(char* check)//输出检查编号名称
+{
+    int i;
+    for(i=0;check[i]!='/0';i++)
+           {if(check[i]==0)             //???可以==0吗 不应该是'0'吗
+                printf("0、血常规\n");
+            if(check[i]==1)
+                printf("1、尿常规\n");
+            if(check[i]==2)
+                printf("2、凝血因子检测\n");
+            if(check[i]==3)
+                printf("3、心电图\n");
+            if(check[i]==4)
+                printf("4、心脏彩超\n");
+            if(check[i]==5)
+                printf("5、胃镜\n");
+            if(check[i]==6)
+                printf("6、肠镜\n");
+            if(check[i]==7)
+                printf("7、验光\n");
+            if(check[i]==8)
+                printf("8、脑CT\n");
+            if(check[i]==9)
+                printf("9、淋巴结检查\n");
+
+        }
+}
+void M_Output(char* medicine)//输出药品编号名称数量
+{
+    int i;
+    for(i=0;medicine[i]!='/0';i=i+3)
+    {
+        if(medicine[i]=0)//不对劲吧
+            printf("%d、生理盐水 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=1)
+            printf("%d、扑热息痛 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=2)
+            printf("%d、可立克 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=3)
+            printf("%d、阿西美辛 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=4)
+            printf("%d、阿司匹林 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=5)
+            printf("%d、青霉素%c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=6)
+            printf("%d、阿莫西林 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=7)
+            printf("%d、头孢氨苄胶囊 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=8)
+            printf("%d、阿奇霉素 %c%c/n",i,medicine[i+1],medicine[i+2]);
+        if(medicine[i]=9)
+            printf("%d、念慈菴川贝枇杷膏 %c%c/n",i,medicine[i+1],medicine[i+2]);
+    }
+}
+int T_compare(struct Time* time1,struct Time* time2)//辅助函数 比较时间
+{
+    if(time1->Month!=time2->Month)
+        return 0;
+    else
+        {if(time1->Day!=time2->Day)
+        return 0;
+    else
+    {
+        if(time1->Hour!=time2->Hour)
+            return 0;
+        else
+        {
+            if(time1->Minute!=time2->Minute)
+                return 0;
+            else
+                return 1;
+        }
+    }
+}}
+void R_statistic(struct Record* r_head, struct Time* tf,struct Time* tl)//输出一段时间内的诊疗记录
+{
+struct Record* rp;
+rp=r_head;
+while(T_compare(rp->time,tf)==0)
+    rp=rp->rnextp;
+if(rp==NULL)
+    printf("时间输入错误！");
+else
+{while(T_compare(rp->time,tl)==0)
+{
+    printf("患者的姓名为：%s\n",rp->patient->P_Name);
+    printf("患者的年龄为：%d\n",rp->patient->P_ID);
+    printf("患者的挂号为：%s\n",rp->patient->P_Number);
+    printf("患者的ID为：%d\n",rp->patient->P_ID);
+    printf("医生的姓名为：%s\n",rp->doctor->D_Name);
+    printf("医生的级别为：%s\n",rp->doctor->D_Level);
+    printf("医生的科室为：%s\n",rp->doctor->D_Dep);
+    printf("医生的工号为：%s\n",rp->doctor->D_Number);
+    printf("检查的编号及名称为：\n");
+    C_Output(rp->Check);
+    printf("药品的编号、名称和数量为：\n");
+    M_Output(rp->Medicine);
+    printf("就诊时间为：%d月%d日 %d时%d分\n",rp->time->Month,rp->time->Day,rp->time->Hour,rp->time->Minute);
+    rp=rp->rnextp;
+}
+    printf("患者的姓名为：%s\n",rp->patient->P_Name);
+    printf("患者的年龄为：%d\n",rp->patient->P_ID);
+    printf("患者的挂号为：%s\n",rp->patient->P_Number);
+    printf("患者的ID为：%d\n",rp->patient->P_ID);
+    printf("医生的姓名为：%s\n",rp->doctor->D_Name);
+    printf("医生的级别为：%s\n",rp->doctor->D_Level);
+    printf("医生的科室为：%s\n",rp->doctor->D_Dep);
+    printf("医生的工号为：%s\n",rp->doctor->D_Number);
+    printf("检查的编号及名称为：\n");
+    C_Output(rp->Check);
+    printf("药品的编号、名称和数量为：\n");
+    M_Output(rp->Medicine);
+    printf("就诊时间为：%d月%d日 %d时%d分/n",rp->time->Month,rp->time->Day,rp->time->Hour,rp->time->Minute);
+}}
+void D_outcall(struct Doctor* d_head)//输出医生的出诊情况
+{
+    struct Doctor* dp;
+    dp=d_head;
+    printf("周一出诊的医生为：\n");
+    while(dp!=NULL)
+        {if(dp->D_Workday[0]==1)
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        dp=dp->D_nextp;}
+    else
+        dp=dp->D_nextp;
+}
+dp=d_head;
+    printf("周二出诊的医生为：\n");
+    while(dp!=NULL)
+        {if(dp->D_Workday[1]==1)
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        dp=dp->D_nextp;}
+    else
+        dp=dp->D_nextp;
+}
+dp=d_head;
+    printf("周三出诊的医生为：\n");
+    while(dp!=NULL)
+        {if(dp->D_Workday[2]==1)
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        dp=dp->D_nextp;}
+    else
+        dp=dp->D_nextp;
+}
+dp=d_head;
+    printf("周四出诊的医生为：\n");
+    while(dp!=NULL)
+        {if(dp->D_Workday[3]==1)
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        dp=dp->D_nextp;}
+    else
+        dp=dp->D_nextp;
+}
+dp=d_head;
+    printf("周五出诊的医生为：\n");
+    while(dp!=NULL)
+        {if(dp->D_Workday[4]==1)
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        dp=dp->D_nextp;}
+    else
+        dp=dp->D_nextp;
+}
+dp=d_head;
+    printf("周六出诊的医生为：\n");
+    while(dp!=NULL)
+        {if(dp->D_Workday[5]==1)
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        dp=dp->D_nextp;}
+    else
+        dp=dp->D_nextp;
+}
+dp=d_head;
+    printf("周天出诊的医生为：/n");
+    while(dp!=NULL)
+        {if(dp->D_Workday[6]==1)
+        {printf("%s %s %s %s\n",dp->D_Name,dp->D_Level,dp->D_Dep,dp->D_Number);
+        dp=dp->D_nextp;}
+    else
+        dp=dp->D_nextp;
+}
+}
+int D_busy(struct Record* r_head,char* number,struct Time* tf,struct Time* tl)//某段时间内医生的挂号数
+{
+    struct Record* rp;
+    rp=r_head;
+    int count=0;
+    while(T_compare(rp->time,tf)==0){
+    rp=rp->rnextp;}
+if(rp==NULL)
+    printf("时间输入错误！\n");
+else
+{while(T_compare(rp->time,tl)==0)
+{
+    if(rp==NULL)
+    printf("时间输入错误！\n");
+    else
+  {
+     if(strcmp(rp->doctor->D_Number,number)==0)
+   {
+       count++;
+    rp=rp->rnextp;
+   }
+   else
+    rp=rp->rnextp;
+}
+    if(strcmp(rp->doctor->D_Number,number)==0)
+        count++;
+  }
+}
+return count;
+}
